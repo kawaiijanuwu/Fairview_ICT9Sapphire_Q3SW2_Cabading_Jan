@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q3Seatwork2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://media.istockphoto.com/id/1309116236/vector/highly-detailed-flag-of-vatican-city-holy-see-vatican-city-holy-see-flag-high-detail.jpg?s=612x612&w=0&k=20&c=UcE3Bg487D-hgWDfBfkk3StlmWpzaPSd-hNod-C9CT0=');
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        }
+        
+        .main-container {
+            background: rgba(62, 60, 40, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 2000px;
+        }
+        
+        .budget-section {
+            background: rgba(201, 177, 18, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .budget-input {
+            background: white;
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            width: 500px;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        
+        .brand-btn {
+            background: #6473b7;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .brand-btn:hover {
+            background: #1a1b24;
+        }
+        
+        .brand-btn.selected {
+            background: #f41d39;
+        }
+        
+        .store-card {
+            background: rgba(223, 220, 7, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        
+        .store-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .discount-display {
+            background: #e71856;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        
+        .find-btn {
+            background: #0b58b7;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 300px;
+        }
+        
+        .find-btn:hover {
+            background: #00b3e6;
+        }
+        
+        .result-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .page-header {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 20px;
+            width: calc(100% - 40px);
+            max-width: 1500px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            background: rgba(0,0,0,0.55);
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <h1>Catholic Shop Finder</h1>
+    </header>
+    <div style="height: 120px;"></div>
+
+    <div class="container">
+        <div class="main-container">
+            <div class="budget-section">
+                <h2 class="mb-3">Ever in need to find the best Catholic products? Enter your budget and let's find the right one for you!</h2>
+                <input type="number" class="budget-input" id="budgetInput" placeholder="Enter your budget here...">
+                <br>
+                <button class="find-btn" onclick="findProducts()">Find Products</button>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <h3>Store Locations</h3>
+                        <div class="store-card" onclick="selectStore(event, 'Talleres')">
+                            <h5>Talleres De Maria</h5>
+                            <p>A. Ibañez St, Angono, 1930 Lalawigan ng Rizal</p>
+                        </div>
+                        <div class="store-card" onclick="selectStore(event, 'Stp')">
+                            <h5>Saint Paul's</h5>
+                            <p>2 Quirino Hwy, Novaliches, Quezon City, Metro Manila</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div>
+                        <h3>Brand & Discounts</h3>
+                        <div id="brandButtons">
+                            <button class="brand-btn" onclick="selectBrand(event, 'Surplices')">Surplices</button>
+                            <button class="brand-btn" onclick="selectBrand(event, 'Cassocks')">Cassocks</button>
+                            <button class="brand-btn" onclick="selectBrand(event, 'Albs')">Albs</button>
+                            <button class="brand-btn" onclick="selectBrand(event, 'Scapulars')">Scapulars</button>
+                            <button class="brand-btn" onclick="selectBrand(event, 'Books')">Books</button>
+                        </div>
+                        <div class="discount-display">
+                            Discounts: ₱<span id="discountAmount">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h3>Recommended Products</h3>
+                <div id="productResults"></div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        let selectedBrand = '';
+        let selectedStore = '';
+        let userBudget = 0;
+        let currentDiscount = 0;
+
+        const products = {
+            'Surplices': [
+                { name: 'Hugot Surplice', price: 6000 },
+                { name: 'Laced Surplice', price: 9000 }
+            ],
+            'Cassocks': [
+                { name: 'Black Embroidered Neck Cassock', price: 4000 },
+                { name: 'White French Cut Cassock', price: 5000 }
+            ],
+            'Albs': [
+                { name: 'Laced Alb', price: 10000 },
+                { name: 'Hugot Alb', price: 8000 }
+            ],
+            'Scapulars': [
+                { name: 'Marian Embroidered Scapular', price: 500 },
+                { name: 'IHS Embroidered Scapular', price: 700 }
+            ],
+            'Books': [
+                { name: 'Ceremoniale of Bishops', price: 5500 },
+                { name: 'Roman Missal', price: 1000 }
+            ]
+        };
+
+        const storeNames = {
+            'Talleres': "Talleres De Maria",
+            'Stp': "Saint Paul's"
+        };
+        
+        function selectBrand(e, brand) {
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            e.currentTarget.classList.add('selected');
+            selectedBrand = brand;
+            calculateDiscount(brand);
+        }
+        
+        function calculateDiscount(e, brand) {
+            currentDiscount = 100;
+            
+            document.getElementById('discountAmount').textContent = currentDiscount.toFixed(2);
+        }
+        
+        function selectStore(e, store) {
+            selectedStore = store;
+            document.querySelectorAll('.store-card').forEach;
+        }
+        
+        function findProducts() {
+            userBudget = parseFloat(document.getElementById('budgetInput').value);
+            
+            availableProducts = products[selectedBrand].filter(product => {
+                return (product.price - currentDiscount) <= userBudget;
+            });
+            
+            displayResults(availableProducts);
+        }
+        
+        function displayResults(productsList) {
+            resultSection = document.getElementById('resultSection');
+            productResults = document.getElementById('productResults');
+            
+            productResults.innerHTML = '';
+            
+            if (productsList.length === 0) {
+                productResults.innerHTML = '<p>No products found within your budget.</p>';
+            } else {
+                productsList.forEach(product => {
+                    const finalPrice = product.price - currentDiscount;
+
+                    let displaystore = '';
+                    if (selectedStore) {
+                        displaystore = storeNames[selectedStore] || selectedStore;
+                    } else if (selectedBrand === 'Books') {
+                        displaystore = storeNames['Stp'];
+                    }
+
+                    productResults.innerHTML += `
+                        <div class="result-item">
+                            <h5>${product.name}</h5>
+                            <p>Original Price: ₱${product.price.toLocaleString()}</p>
+                            <p>Discounted Price: ₱${finalPrice.toLocaleString()}</p>
+                            ${displaystore ? `<p>Available at: ${displaystore}</p>` : ''}
+                        </div>
+                    `;
+                });
+            }
+            
+            resultSection.style.display = 'block';
+        }
+        
+    </script>
+</body>
+</html>
